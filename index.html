@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagos APP</title>
+    <script type="module" src="/dist/index.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gray-800">
+    <div class="p-6 text-3xl text-white font-bold">
+        <h1>Pagos App</h1>
+    </div>
+    <section class="mt-16 w-full flex flex-col sm:flex-row items-center justify-center sm:space-x-8 space-y-8 sm:space-y-0 ">
+        <!------------------------------------------ PAGO CON TARJETA --------------------------------------------------------------------------------->
+        <div class="flex flex-col w-[27rem] h-[27rem] bg-gray-300 p-6 rounded rounded-xl" id="formTarjeta">
+            <p class="text-2xl mb-8 mt-4">Pago con tarjeta</p>
+            <label>Cantidad</label>
+            <input type="number" name="amount" id="amountTarjeta" class="mb-4 p-1" required>
+            <label>Moneda</label>
+            <select class="mb-4 p-1" id="currencyTarjeta">
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+                <option value="CHF">CHF</option>
+                <option value="CNY">CNY</option>
+                <option value="JPY">JPY</option>
+            </select>
+            <label>Numero de tarjeta</label>
+            <input type="text" name="cardNum" id="cardNumTarjeta" class="mb-4 p-1" placeholder="XXXX-XXXX-XXXX-XXXXX" required>
+            <button type="submit" class="p-2 bg-gray-700 hover:bg-gray-600 text-white mt-2" id="submitTarjeta">Validar</button>
+            <span class="hidden text-red-500 font-bold mt-2" id="spanErrorTarjeta">Faltan campos por informar</span>
+        </div>
+
+        <!------------------------------------------ PAGO EN METÁLICO --------------------------------------------------------------------------------->
+
+        <div class="flex flex-col w-[27rem] h-[27rem] bg-gray-300 p-6 rounded rounded-xl" id="formTarjeta">
+            <p class="text-2xl mb-8 mt-4">Pago con metálico</p>
+            <label>Cantidad</label>
+            <input type="number" name="amount" id="amountMetalico" class="mb-4 p-1" required>
+            <label>Moneda</label>
+            <select class="mb-4 p-1" id="currencyMetalico" required>
+                <option>EUR</option>
+                <option>USD</option>
+                <option>GBP</option>
+                <option>CHF</option>
+                <option>CNY</option>
+                <option>JPY</option>
+            </select>
+            <label>Tipos de moneda</label>
+            <div class="grid grid-cols-4 grid-rows-2 gap-2">
+                <div>
+                    <label for="">1€ </label><input type="number" class="w-12 rounded" min="0" id="coin1">
+                </div>
+                <div>
+                    <label for="">2€ </label><input type="number" class="w-12 rounded" min="0" id="coin2">
+                </div>
+                <div>
+                    <label for="">5€ </label><input type="number" class="w-12 rounded" min="0" id="coin5">
+                </div>
+                <div>
+                    <label for="">10€ </label><input type="number" class="w-12 rounded" min="0" id="coin10">
+                </div>
+                <div>
+                    <label for="">20€ </label><input type="number" class="w-12 rounded" min="0" id="coin20">
+                </div>
+                <div>
+                    <label for="">50€ </label><input type="number" class="w-12 rounded" min="0" id="coin50">
+                </div>
+                <div>
+                    <label for="">100€ </label><input type="number" class="w-12 rounded" min="0" id="coin100">
+                </div>
+                <div>
+                    <label for="">500€ </label><input type="number" class="w-12 rounded" min="0" id="coin500">
+                </div>
+            </div>
+            <button type="submit" class="p-2 bg-gray-700 hover:bg-gray-600 text-white mt-2" id="submitMetalico">Validar</button>
+            <span class="hidden text-red-500 font-bold mt-2" id="spanErrorMetalico"></span>
+        </div>
+
+
+        <!-- Modal tarjeta -->
+        <div class="hidden relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalTarjeta">
+            <div class="fixed inset-0 bg-gray-700 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+              <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                  <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                      <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                        <h3 class="text-lg font-semibold leading-6 text-gray-900" id="modal-title">Pago con tarjeta realizado</h3>
+                        <div class="mt-2 text-sm text-gray-500">
+                          <p class="text-sm text-gray-600">Se ha realizado el pago con tarjeta correctamente!</p>
+                          <p id="cantidadModalTarjeta"></p>
+                          <p id="numTarjetaModalTarjeta"></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    <button type="button" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto" id="btnCerrarModalTarjeta">Aceptar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+        <!-- Modal metalico -->
+        <div class="hidden relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="modalMetalico">
+            <div class="fixed inset-0 bg-gray-700 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+              <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                  <div class="bg-white px-4 pb-4 pt-8 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                      <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                        <h3 class="text-lg font-semibold leading-6 text-gray-900" id="modal-title">Pago en metálico realizado</h3>
+                        <div class="mt-2 text-sm text-gray-500">
+                          <p class="text-sm text-gray-600">Se ha realizado el pago en metálico correctamente!</p>
+                          <p id="cantidadModalMetalico"></p>
+                          <p id="cambioModalMetalico"></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    <button type="button" class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto" id="btnCerrarModalMetalico">Aceptar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </section>
+
+</body>
+</html>
